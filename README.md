@@ -12,17 +12,22 @@
 
 ```text
 novel-factory
+├─ auth
 ├─ data
 │  ├─ characters.json
+│  ├─ publish_config.json
 │  ├─ series_state.json
 │  ├─ story_seeds.csv
 │  ├─ used_seeds.txt
 │  └─ settings.json
 ├─ out
 │  └─ chapters
+├─ requirements.txt
 ├─ scripts
 │  ├─ generate_chapter.py
-│  └─ mark_used.py
+│  ├─ login_kakuyomu.py
+│  ├─ mark_used.py
+│  └─ publish_kakuyomu.py
 └─ README.md
 ```
 
@@ -33,6 +38,20 @@ novel-factory
 3. 問題なければ `python scripts/mark_used.py`
 
 `mark_used.py` を実行すると `used_seeds.txt` と `series_state.json` が更新されます。
+
+## カクヨム下書き投稿
+
+1. `pip install -r requirements.txt`
+2. `python -m playwright install chromium`
+3. `python scripts/login_kakuyomu.py`
+4. `data/publish_config.json` の `work_new_episode_url` を設定
+5. `python scripts/publish_kakuyomu.py`
+
+注意:
+
+- 投稿はブラウザ自動操作なので、サイトUI変更に弱いです
+- 現在のスクリプトは「下書き保存」前提です
+- セレクタはカクヨム側の画面変更で調整が必要になることがあります
 
 ## 方針
 
@@ -45,3 +64,4 @@ novel-factory
 - 話数に応じて序盤・中盤・終盤の空気を変える
 - 中盤以降は監査役「灰島」の影を出しやすくする
 - `series_state.json` で未回収の伏線と現在の対立相手を保持する
+- Playwright でカクヨム下書き投稿まで自動化できるようにしている

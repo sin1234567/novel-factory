@@ -1,0 +1,10 @@
+{
+  "platform": "kakuyomu",
+  "work_new_episode_url": "",
+  "default_visibility": "draft",
+  "selectors": {
+    "episode_title": "input[name='title']",
+    "episode_body": "textarea[name='body']",
+    "save_draft": "button[type='submit']"
+  }
+}
