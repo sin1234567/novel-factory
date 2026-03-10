@@ -28,7 +28,9 @@ novel-factory
 │  ├─ generate_chapter.py
 │  ├─ login_kakuyomu.py
 │  ├─ mark_used.py
-│  └─ publish_kakuyomu.py
+│  ├─ publish_kakuyomu.py
+│  ├─ rebuild_chapters.py
+│  └─ update_kakuyomu_draft.py
 └─ README.md
 ```
 
@@ -48,6 +50,7 @@ novel-factory
 3. `python scripts/login_kakuyomu.py`
 4. `data/publish_config.json` の `work_new_episode_url` を設定
 5. `python scripts/publish_kakuyomu.py`
+6. 既存下書きを差し替えるときは `python scripts/update_kakuyomu_draft.py --chapter out/chapters/chapter_001.md --episode-url <編集URL>`
 
 注意:
 
@@ -57,6 +60,7 @@ novel-factory
 - 投稿はブラウザ自動操作なので、サイトUI変更に弱いです
 - 現在のスクリプトは「下書き保存」前提です
 - セレクタはカクヨム側の画面変更で調整が必要になることがあります
+- 第1話や第2話のような既存下書きも、編集URLが分かれば上書きできます
 
 ## 現在の状態
 
