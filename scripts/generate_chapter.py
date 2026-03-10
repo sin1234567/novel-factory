@@ -29,6 +29,11 @@ OPENINGS = [
     "{place}の朝は遅い。陽が差し込んでも石畳はすぐには温まらず、古い配管の奥で遅れて目を覚ましたような音が鳴る。{chapter_label}の始まりにふさわしくないほど静かな朝だったが、そういう朝に限って厄介な異変は見つかるものだった。",
     "その街では、静かな朝ほど何かが隠れている。{place}に暮らす人間は皆それを知っていて、だからこそ大きな声で不安を口にしない。沈黙の底に沈んだ違和感を拾うのは、いつだって一番忙しくて一番目立たない誰かだった。",
 ]
+WORKDAY_LINES = [
+    "{name}は修理台の布を整え、昨夜の作業記録を開いた。工房の朝は毎日似ているはずなのに、異変の噂が一つ増えるだけで、同じ道具の重さまで違って感じられる。",
+    "{name}は朝の点検表を指先でなぞり、抜けがないことを確かめた。手順はいつも通りでも、街の沈黙が一段深い朝には、その『いつも通り』自体が信用できなくなる。",
+    "{name}は工具箱の蓋を開け、油差しの減り方まで確かめた。普段なら落ち着くはずの細かな作業が、今日は逆に胸のざわつきを際立たせる。",
+]
 SCENE_SETUP = [
     "{name}は{role}として工房の鍵を開けながら、{hook}という噂を思い出していた。ただの噂として片づけるには妙に具体的で、誰に聞いても細部だけが少しずつ違う。その違いが逆に不気味だった。街の人は何かを見たのではなく、同じ種類の異常をそれぞれ別の角度から知っているのではないか。そんな考えが、朝の冷えた空気より先に胸の内側へ入り込んでいた。",
     "{name}は工具箱の留め具を確かめ、いつもの順番で作業台を整えた。手を動かしている間だけは余計な考えを脇に置けるはずだったが、{hook}という噂が頭の隅から離れない。職人見習いとして一日を始めるだけなら十分な朝のはずなのに、今日はまだ何も起きていない段階で、すでに歯車が一枚ずれているような感覚があった。",
@@ -37,9 +42,19 @@ INCITING_LINES = [
     "その日も異変は小さく始まった。{seed}。最初に聞いた瞬間は誰かの見間違いか、古い機械らしい気まぐれのようにも思えた。だが細部をたどるほど、単なる偶然にしては説明のつかない整い方をしている。",
     "朝の仕事が一段落したころ、{seed}という話が持ち込まれた。よくある故障報告なら作業伝票の一枚で済む。けれど今回は違った。話し手は自分でも何が異常なのか説明しきれない顔をしていて、その曖昧さがむしろ本物の不気味さを連れてきた。",
 ]
+FIELD_LINES = [
+    "{name}が現場へ向かうころには、噂だけが先に街路を走っていた。人々は大げさに騒がないかわりに、目を合わせる時間だけが少し短い。その小さな逃げ方が、かえって本物の異常を感じさせた。",
+    "現場の近くまで来ると、作業の手を止めた職人たちが、理由を説明しないまま道を空けた。誰も真琴を止めないのは協力的だからではなく、自分では見に行きたくないからだとすぐに分かった。",
+    "そこへ向かう道すがら、街の空気はいつもより乾いていた。金属のにおい、湿った石の冷たさ、遠くの回転音。そのどれもが、今日の異変だけを静かに浮き上がらせていた。",
+]
 INVESTIGATION_LINES = [
     "{name}は違和感を見過ごせず、ひとまず記録を取ることにした。時間、場所、音、匂い、周囲にいた人の名前。師匠に鍛えられてきたせいか、異常を見た瞬間よりも、後から振り返ったときに役立つ細部のほうが先に気になる。現場へ向かう途中、街路の端で朝露を弾く金属片が目に入り、それがなぜか今回の件と無関係ではないように思えた。",
     "{name}は仕事を続けるふりをしながら、妙な点を一つずつ頭の中で並べていった。異変そのものより、それを見た人間の口ぶりが揃いすぎている。驚いているようで、どこか諦めたようでもある。その温度感は、初めて起きた出来事ではなく、以前にも似たものがあったときの反応に近かった。",
+]
+CONFLICT_LINES = [
+    "{name}は、この異変をただの現場仕事として処理したい自分と、そこに潜む意図まで追いたい自分の間でわずかに揺れた。だが今回は、部品を元に戻すだけでは終わらないと最初から分かっていた。",
+    "故障の報告書だけを書いて終えることもできた。だが{name}は、そうして積み重なった見逃しの先に今の街があるのではないかと感じていた。だから、面倒だと分かっていても一歩深く踏み込むしかない。",
+    "{name}は頭の中で仕事の線引きを何度も引き直した。見習いの立場を越えていると分かっていても、今ここで目をそらせば、次に異変が起きたとき同じことを繰り返すだけだった。",
 ]
 MENTOR_LINES = [
     "師匠の{mentor_name}は、いつもなら一言で指示を出すのに、この件になると道具箱の整理ばかり気にしていた。無関心を装っているのか、逆に気づかれたくないのか、その境目が見えない。{name}は問いただすかわりに横顔を観察した。古い傷のある指先が、必要以上に几帳面な動きで部品を並べ替えている。",
@@ -97,6 +112,20 @@ ARC_EXPANSIONS = {
     "終盤": [
         "終盤に近づくにつれ、過去に拾った違和感はばらばらな記録ではなく、同じ設計図の断片のように見え始める。真琴が今向き合っているのは新しい謎ではなく、ずっと前から街に置かれていた問いの続きなのかもしれなかった。",
         "回収の段階では、新しい情報そのものより、既に知っていた事実の意味が変わることのほうが大きい。真琴は今日見つけた手がかりを胸の中で反転させながら、これまでの出来事が一つの輪郭へ収束していく気配を感じていた。",
+    ],
+}
+ARC_OPENERS = {
+    "序盤": [
+        "街の異変はまだ断片にすぎない。だが断片の並び方には、もう偶然では済まない癖が見え始めていた。",
+        "謎が小さいうちは、まだ引き返せる。真琴はそう思いながらも、すでに街の奥へ足を踏み入れている感覚を否定できなかった。",
+    ],
+    "中盤": [
+        "ここまで来ると、異変を調べること自体が誰かの目に触れる行為になる。真琴は手がかりを拾うたび、自分もまた観察されている気配を強く感じていた。",
+        "街の秘密は、知る者を選んでいるように見えた。けれど実際には、知ろうとした者の立ち位置を静かに変えているだけなのかもしれなかった。",
+    ],
+    "終盤": [
+        "今の真琴に必要なのは新しい謎ではなく、散らばった断片をつなぐ視点だった。答えは増えないのに、見える輪郭だけが急に濃くなっていく。",
+        "終わりに近づくほど、街の異変は派手さを失い、代わりに逃げ場をなくしていく。もうどの出来事も単独では読めなかった。",
     ],
 }
 ARC_CATEGORY_HINTS = {
@@ -187,7 +216,7 @@ def build_body(settings: dict, seed: dict[str, str], characters: list[dict], sta
     librarian = next((c for c in characters if "司書" in c["role"]), characters[-1])
     watcher = next((c for c in characters if "監査役" in c["role"]), characters[-1])
 
-    body = [
+    intro_a = [
         random.choice(OPENINGS).format(place=place, chapter_label=chapter_label),
         random.choice(SCENE_SETUP).format(
             name=protagonist["name"],
@@ -195,20 +224,54 @@ def build_body(settings: dict, seed: dict[str, str], characters: list[dict], sta
             hook=hook,
         ),
         random.choice(INCITING_LINES).format(seed=seed["seed"]),
+        random.choice(FIELD_LINES).format(name=protagonist["name"]),
         random.choice(SENSORY_LINES),
         random.choice(INVESTIGATION_LINES).format(name=protagonist["name"]),
+    ]
+    intro_b = [
+        random.choice(ARC_OPENERS[arc]),
+        random.choice(WORKDAY_LINES).format(name=protagonist["name"]),
+        random.choice(INCITING_LINES).format(seed=seed["seed"]),
+        random.choice(SENSORY_LINES),
+        random.choice(FIELD_LINES).format(name=protagonist["name"]),
+        random.choice(INVESTIGATION_LINES).format(name=protagonist["name"]),
+    ]
+    mentor_block_a = [
         random.choice(MENTOR_LINES).format(name=protagonist["name"], mentor_name=mentor["name"]),
         random.choice(MENTOR_DIALOGUES).format(mentor_name=mentor["name"]),
         random.choice(REACTION_LINES),
+    ]
+    mentor_block_b = [
+        random.choice(CONFLICT_LINES).format(name=protagonist["name"]),
+        random.choice(MENTOR_DIALOGUES).format(mentor_name=mentor["name"]),
+        random.choice(MENTOR_LINES).format(name=protagonist["name"], mentor_name=mentor["name"]),
+    ]
+    library_block = [
         random.choice(LIBRARY_LINES).format(name=protagonist["name"], librarian_name=librarian["name"]),
         random.choice(LIBRARY_DIALOGUES).format(librarian_name=librarian["name"]),
+    ]
+    resolution_block_a = [
         random.choice(TWIST_LINES).format(name=protagonist["name"], twist=seed["twist"]),
         random.choice(INNER_LINES).format(name=protagonist["name"]),
-        f"{protagonist['name']}の目的は{protagonist['goal']}ことだが、今回の出来事はその入口にすぎなかった。異変一つを追うだけなら修理工見習いの仕事の範囲を超えている。けれど街の異常が工房の仕事と日常の境目を少しずつ侵食している以上、もう見て見ぬふりでは済まない。自分の仕事を守るためにも、働く場所そのものを疑う必要が出てきていた。",
+        random.choice(CONFLICT_LINES).format(name=protagonist["name"]),
         random.choice(REVEAL_LINES).format(name=protagonist["name"]),
         random.choice(ARC_EXPANSIONS[arc]),
         random.choice(CLOSING_LINES).format(name=protagonist["name"]),
     ]
+    resolution_block_b = [
+        random.choice(INNER_LINES).format(name=protagonist["name"]),
+        random.choice(TWIST_LINES).format(name=protagonist["name"], twist=seed["twist"]),
+        random.choice(REVEAL_LINES).format(name=protagonist["name"]),
+        random.choice(ARC_EXPANSIONS[arc]),
+        random.choice(CLOSING_LINES).format(name=protagonist["name"]),
+    ]
+
+    structures = [
+        intro_a + mentor_block_a + library_block + resolution_block_a,
+        intro_b + mentor_block_b + library_block + resolution_block_b,
+        intro_a + library_block + mentor_block_b + resolution_block_b,
+    ]
+    body = random.choice(structures)
 
     if state.get("open_threads"):
         body.insert(3, random.choice(THREAD_LINES).format(thread=random.choice(state["open_threads"])))

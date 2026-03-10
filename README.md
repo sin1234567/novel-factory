@@ -29,6 +29,8 @@ novel-factory
 │  ├─ login_kakuyomu.py
 │  ├─ mark_used.py
 │  ├─ publish_kakuyomu.py
+│  ├─ refresh_existing_chapters.py
+│  ├─ refresh_kakuyomu_drafts.py
 │  ├─ rebuild_chapters.py
 │  └─ update_kakuyomu_draft.py
 └─ README.md
@@ -51,6 +53,8 @@ novel-factory
 4. `data/publish_config.json` の `work_new_episode_url` を設定
 5. `python scripts/publish_kakuyomu.py`
 6. 既存下書きを差し替えるときは `python scripts/update_kakuyomu_draft.py --chapter out/chapters/chapter_001.md --episode-url <編集URL>`
+7. 既存章をまとめて作り直すときは `python scripts/refresh_existing_chapters.py --start 2 --end 40`
+8. 既存のカクヨム下書きをまとめて上書きするときは `python scripts/refresh_kakuyomu_drafts.py --start 2 --end 40 --work-url <作品管理URL>`
 
 注意:
 
@@ -69,6 +73,7 @@ novel-factory
 - 公開はまだしていない
 - `series_state.json` は次回生成が第41話になる状態
 - `uploaded_drafts.txt` で送信済み章を管理している
+- 第2話から第40話は章構成の型を増やした版へ差し替え済み
 
 ## 方針
 
