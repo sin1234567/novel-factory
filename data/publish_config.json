@@ -10,6 +10,6 @@
   "selectors": {
     "episode_title": "input[name='title']",
     "episode_body": "textarea[name='body']",
-    "save_draft": "button[type='submit']"
+    "save_draft": "#saveButton"
   }
 }

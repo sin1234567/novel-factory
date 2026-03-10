@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
@@ -63,7 +64,10 @@ def main() -> None:
             raise RuntimeError("Timed out while trying to fill or save the Kakuyomu draft.") from exc
 
         print("Draft submission flow executed. Verify the result in the opened browser window.")
-        input("Press Enter to close the browser...")
+        try:
+            page.wait_for_timeout(8000)
+        except PlaywrightError:
+            pass
         context.close()
 
 
