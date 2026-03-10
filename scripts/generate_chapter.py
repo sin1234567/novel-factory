@@ -133,6 +133,7 @@ ARC_CATEGORY_HINTS = {
     "中盤": {"事件", "対立", "秘密"},
     "終盤": {"回収", "秘密", "事件"},
 }
+CHAPTER_MODES = ("dialogue", "investigation", "reflective")
 WATCHER_LINES = [
     "{watcher_name}はその場にいなかったはずなのに、後から振り返ると最初から近くに視線だけ置いていたように思える人物だった。街の仕組みを守る側なのか、壊さないよう監視する側なのか、その立ち位置はまだ読めない。ただ一つ言えるのは、真琴が手がかりを拾うたびに、その人物の影もまた濃くなるということだった。",
     "{watcher_name}という名は記録にも会話にも頻繁には出てこない。だが工房組合の決定や街の検査記録を辿ると、いつも最後にその名前が静かに残っている。表では穏やかに微笑み、裏では流れを止める。そういう人間が一人いるだけで、街の空気は驚くほど変わる。",
@@ -149,6 +150,32 @@ ANTAGONIST_LINES = [
     "真琴は最近、{antagonist}という名前を考える回数が増えていた。姿を見ない日でも、その人物の判断だけが先に街へ届いているように感じる。",
     "直接対立したわけではない。それでも{antagonist}の存在は、真琴にとって次第に街のルールそのもののように重くなっていた。",
 ]
+DIALOGUE_SCENES = [
+    "「また止まったんですか」\n\n真琴が尋ねると、現場にいた職人はうなずくかわりに肩をすくめた。\n\n「止まっただけならまだいい。問題は、誰も最初の音を聞いていないことだ」\n\nそう言われた瞬間、真琴は異変そのものよりも、誰も最初を見ていないという事実のほうに引っかかった。",
+    "「見た者がみんな違う話をするんです」\n\n現場にいた若い職人は、声を潜めるでもなく言った。\n\n「なのに、怖かったというところだけは同じで」\n\n真琴はその言い方に、記憶より先に感情だけが共有されている妙さを感じた。",
+]
+INVESTIGATION_SCENES = [
+    "真琴は現場に残った跡を、目につく順ではなく不自然な順に拾っていった。足跡、油の線、部品の並び、触れた痕跡。ばらばらの情報をそのまま書き出してみると、誰かが『偶然に見える配置』をわざわざ選んだようにしか見えなかった。",
+    "調べるほどに、異変そのものより手順の整い方が気になった。壊れたのなら壊れたなりの乱れが残るはずなのに、今回は隠すための雑さではなく、見つけさせるための丁寧さがあった。",
+]
+REFLECTIVE_SCENES = [
+    "工房へ戻る道で、真琴は何度も足を止めそうになった。恐ろしいからではない。むしろ、ここまで来ても街の人間が普段通りに暮らしていることのほうが気にかかった。異変のある日常に慣れた街で、自分だけが慣れきれずにいるのかもしれないという感覚が、じわじわと胸に残った。",
+    "一つ異変を知るたび、真琴は街そのものの見え方が変わっていくのを感じていた。今まで背景だったはずの塔、橋、地下通路、古い帳面。そのどれもが、黙っているだけで無関係とは言い切れない顔つきを持ち始めていた。",
+]
+MODE_ENDINGS = {
+    "dialogue": [
+        "最後に残ったのは結論ではなく、誰の言葉を信じるべきかという感触だった。真琴は記録だけでは足りないと知りながら、それでも次に誰へ話を聞くべきかを慎重に考え始めていた。",
+        "会話の断片はどれも決定打にはならない。それでも、言葉の選び方には嘘より先に立場が出る。真琴はそれを忘れないよう、帰る前に短いメモを一行だけ書き足した。",
+    ],
+    "investigation": [
+        "今日の収穫は派手ではない。だが、異変の『起き方』ではなく『残り方』に規則があると分かっただけでも十分だった。真琴は次から、見る順番そのものを変える必要があると考えた。",
+        "調査の成果はまだ仮説の域を出ない。それでも、痕跡の重なり方に一貫した癖がある以上、次に見るべき場所はもう偶然では選ばないで済むはずだった。",
+    ],
+    "reflective": [
+        "真琴はその夜、自分が追っているのが事件だけではなく、この街で黙って生きる方法そのものなのだと気づいた。だからこそ、答えは事実の中だけではなく、人が何を言わないかの中にもあるのだと思えた。",
+        "部屋の灯りを落としたあとも、今日の違和感は言葉になりきらないまま残った。だが、その曖昧さを急いで片づけないこと自体が、いまの真琴には必要な作法なのかもしれなかった。",
+    ],
+}
 
 
 def load_json(path: Path) -> dict:
@@ -205,6 +232,14 @@ def build_summary(protagonist_name: str, seed: dict[str, str]) -> str:
     )
 
 
+def choose_chapter_mode(chapter_number: int, seed: dict[str, str]) -> str:
+    if seed["category"] in {"対立", "人物"}:
+        return "dialogue"
+    if seed["category"] in {"事件", "回収"}:
+        return "investigation"
+    return CHAPTER_MODES[(chapter_number - 1) % len(CHAPTER_MODES)]
+
+
 def build_body(settings: dict, seed: dict[str, str], characters: list[dict], state: dict) -> list[str]:
     protagonist = settings["protagonist"]
     place = settings["setting"]["place"]
@@ -212,6 +247,7 @@ def build_body(settings: dict, seed: dict[str, str], characters: list[dict], sta
     chapter_number = state["next_chapter"]
     chapter_label = f"第{chapter_number}話"
     arc = get_arc(chapter_number)
+    mode = choose_chapter_mode(chapter_number, seed)
     mentor = next((c for c in characters if "師匠" in c["role"]), characters[0])
     librarian = next((c for c in characters if "司書" in c["role"]), characters[-1])
     watcher = next((c for c in characters if "監査役" in c["role"]), characters[-1])
@@ -272,6 +308,16 @@ def build_body(settings: dict, seed: dict[str, str], characters: list[dict], sta
         intro_a + library_block + mentor_block_b + resolution_block_b,
     ]
     body = random.choice(structures)
+
+    if mode == "dialogue":
+        body.insert(6, random.choice(DIALOGUE_SCENES))
+        body.insert(-1, random.choice(MODE_ENDINGS["dialogue"]))
+    elif mode == "investigation":
+        body.insert(6, random.choice(INVESTIGATION_SCENES))
+        body.insert(-1, random.choice(MODE_ENDINGS["investigation"]))
+    else:
+        body.insert(6, random.choice(REFLECTIVE_SCENES))
+        body.insert(-1, random.choice(MODE_ENDINGS["reflective"]))
 
     if state.get("open_threads"):
         body.insert(3, random.choice(THREAD_LINES).format(thread=random.choice(state["open_threads"])))
