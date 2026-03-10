@@ -15,6 +15,7 @@ novel-factory
 ├─ auth
 ├─ data
 │  ├─ characters.json
+│  ├─ long_story_outline.csv
 │  ├─ publish_config.json
 │  ├─ series_state.json
 │  ├─ story_seeds.csv
@@ -26,6 +27,7 @@ novel-factory
 ├─ requirements.txt
 ├─ scripts
 │  ├─ generate_chapter.py
+│  ├─ generate_long_novel.py
 │  ├─ login_kakuyomu.py
 │  ├─ mark_used.py
 │  ├─ publish_kakuyomu.py
@@ -41,6 +43,12 @@ novel-factory
 1. `python scripts/generate_chapter.py`
 2. `out/chapter_latest.md` を確認
 3. 問題なければ `python scripts/mark_used.py`
+
+長い本編を先に40話分まとめて作る場合:
+
+1. `python scripts/generate_long_novel.py`
+2. `out/chapters/chapter_001.md` から `chapter_040.md` を確認
+3. `python scripts/refresh_kakuyomu_drafts.py --start 1 --end 40 --work-url <作品管理URL>`
 
 `mark_used.py` を実行すると `used_seeds.txt` と `series_state.json` が更新されます。
 `publish_kakuyomu.py` は `uploaded_drafts.txt` にない章だけを下書き送信します。
@@ -73,12 +81,15 @@ novel-factory
 - 公開はまだしていない
 - `series_state.json` は次回生成が第41話になる状態
 - `uploaded_drafts.txt` で送信済み章を管理している
-- 第2話から第40話は章構成の型を増やした版へ差し替え済み
+- `out/full_manuscript.md` から 40話へ切り分けた版に差し替え済み
+- 40話分の長編設計図は `data/long_story_outline.csv` で管理できる
 
 ## 方針
 
 - 完全無料
 - まずは連載1話分を2000字以上で下書き生成
+- 必要なら 40話分の長編設計図から一括生成してから分割投稿する
+- 現在は長い本編を先に作ってから 40話へ切る方式を優先している
 - 同じネタの重複防止あり
 - 前回あらすじと話数を引き継げる
 - `story_seeds.csv` は40話超の種を収録
