@@ -39,9 +39,27 @@ MENTOR_LINES = [
     "師匠の{mentor_name}は、いつもなら一言で指示を出すのに、この件になると道具箱の整理ばかり気にしていた。無関心を装っているのか、逆に気づかれたくないのか、その境目が見えない。{name}は問いただすかわりに横顔を観察した。古い傷のある指先が、必要以上に几帳面な動きで部品を並べ替えている。",
     "{mentor_name}は露骨に話題を変えたわけではない。ただ、異変の細部に触れた瞬間だけ、返事の間がわずかに長くなった。長年同じ工房で働く者でなければ気づけないほど小さな違和感だが、{name}にとっては十分だった。その沈黙は、知らないのではなく知っていて伏せている人間の沈黙だった。",
 ]
+MENTOR_DIALOGUES = [
+    "「その話はあとにしろ」\n\n{mentor_name}は顔を上げずに言った。\n\n「今朝のうちに片づける仕事がある」\n\n短い言い方だったが、追及を嫌っていることは十分に伝わった。",
+    "「気にするなと言っても無理か」\n\n{mentor_name}は工具を拭きながら、小さく息をついた。\n\n「だが、見たものをすぐ口に出すな。街はそういう場所じゃない」\n\n忠告というより、昔から自分に言い聞かせてきた言葉のように聞こえた。",
+]
 LIBRARY_LINES = [
     "昼過ぎ、{name}は街の記録を調べるために図書館へ向かった。司書の{librarian_name}は薄い紙束を束ね直しながら、表向きは何でもない顔をしていたが、古い記録棚の前に立つときだけ視線の動きが慎重になる。過去の事故や異変は、街では忘れられるのではなく、誰かが見つけにくい場所へしまい込んでいるのだと感じられた。",
     "{name}が図書館の記録室へ足を踏み入れると、古紙の匂いと油のにおいが混ざっていた。工房の街らしい匂いだと一瞬思ったが、図書館に機械油の残り香があるのはおかしい。司書の{librarian_name}はその指摘に驚かなかった。むしろ、ようやく気づいたのかという目で棚の奥を一度だけ見た。",
+]
+LIBRARY_DIALOGUES = [
+    "「記録は残っています。ただし、見つけにくくしてあるだけです」\n\n{librarian_name}は薄い帳面を閉じ、真琴をまっすぐ見た。\n\n「誰かが隠したのではなく、誰も見たがらなかった結果かもしれません」\n\nその静かな言い方が、かえって重かった。",
+    "「あなたが探しているのは故障の記録ではありませんね」\n\n{librarian_name}は棚の奥へ手を伸ばしながら言った。\n\n「故障のふりをしたもの、そのほうでしょう」\n\n真琴は答えず、代わりに差し出された古い台帳を受け取った。",
+]
+SENSORY_LINES = [
+    "地下へ向かう通路は昼でも薄暗く、壁に染みこんだ油のにおいが靴音にまでまとわりついてくる。遠くで水滴が落ちるたび、金属の反響が少し遅れて返ってきた。",
+    "石畳の継ぎ目にはまだ朝の湿り気が残っていた。指先で手すりに触れるとひやりと冷たく、その感触だけで人の少ない場所へ来たことが分かる。",
+    "街の機械音はいつもなら背景に溶けるのに、その日は妙に輪郭がはっきりしていた。回転音の合間に混ざる沈黙までが、誰かの意図のように思えた。",
+]
+REACTION_LINES = [
+    "真琴はすぐに返事をしなかった。理解が追いつかなかったというより、言葉にした瞬間に曖昧な違和感がただの感想へ変わってしまう気がしたからだ。",
+    "喉の奥まで出かかった問いを、真琴はいったん飲み込んだ。急いで答えを取ろうとすると、この街のものは決まって形を変える。",
+    "その場で結論を出すには材料が足りない。けれど、見逃していい気配ではないことだけは、皮膚の内側が先に理解していた。",
 ]
 TWIST_LINES = [
     "手がかりは単純ではない。{twist}。その事実は、異変をただの故障から切り離し、誰かの意思が介在した出来事へ変えてしまう。事故や偶然ならば不揃いであるはずの痕跡が、今回は妙なほど整っていた。整いすぎているものは、たいてい自然には生まれない。",
@@ -114,9 +132,13 @@ def build_body(settings: dict, seed: dict[str, str], characters: list[dict], sta
             hook=hook,
         ),
         random.choice(INCITING_LINES).format(seed=seed["seed"]),
+        random.choice(SENSORY_LINES),
         random.choice(INVESTIGATION_LINES).format(name=protagonist["name"]),
         random.choice(MENTOR_LINES).format(name=protagonist["name"], mentor_name=mentor["name"]),
+        random.choice(MENTOR_DIALOGUES).format(mentor_name=mentor["name"]),
+        random.choice(REACTION_LINES),
         random.choice(LIBRARY_LINES).format(name=protagonist["name"], librarian_name=librarian["name"]),
+        random.choice(LIBRARY_DIALOGUES).format(librarian_name=librarian["name"]),
         random.choice(TWIST_LINES).format(name=protagonist["name"], twist=seed["twist"]),
         random.choice(INNER_LINES).format(name=protagonist["name"]),
         f"{protagonist['name']}の目的は{protagonist['goal']}ことだが、今回の出来事はその入口にすぎなかった。異変一つを追うだけなら修理工見習いの仕事の範囲を超えている。けれど街の異常が工房の仕事と日常の境目を少しずつ侵食している以上、もう見て見ぬふりでは済まない。自分の仕事を守るためにも、働く場所そのものを疑う必要が出てきていた。",
