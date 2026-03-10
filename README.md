@@ -18,6 +18,7 @@ novel-factory
 │  ├─ publish_config.json
 │  ├─ series_state.json
 │  ├─ story_seeds.csv
+│  ├─ uploaded_drafts.txt
 │  ├─ used_seeds.txt
 │  └─ settings.json
 ├─ out
@@ -38,6 +39,7 @@ novel-factory
 3. 問題なければ `python scripts/mark_used.py`
 
 `mark_used.py` を実行すると `used_seeds.txt` と `series_state.json` が更新されます。
+`publish_kakuyomu.py` は `uploaded_drafts.txt` にない章だけを下書き送信します。
 
 ## カクヨム下書き投稿
 
