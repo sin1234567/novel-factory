@@ -30,6 +30,16 @@ def main() -> None:
     state["last_summary"] = seed["summary"]
     state["last_seed_id"] = seed_id
     state["last_seed"] = seed["seed"]
+
+    open_threads = state.get("open_threads", [])
+    new_thread = seed["twist"]
+    if new_thread not in open_threads:
+        open_threads.append(new_thread)
+    state["open_threads"] = open_threads[-5:]
+
+    if seed.get("category") in {"対立", "回収"}:
+        state["current_antagonist"] = "灰島"
+
     STATE.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
 
     print(f"Marked used: {seed_id}")

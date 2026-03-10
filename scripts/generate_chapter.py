@@ -112,6 +112,14 @@ WATCHER_DIALOGUES = [
     "「記録は残したほうがいい。ただし、残し方を間違えると街のためにならない」\n\n灰島は柔らかな声でそう言った。\n\n脅しには聞こえない。だからこそ、真琴は余計に警戒した。",
     "「君はよく見ている。だが、見えたもの全部に名前を付ける必要はない」\n\n灰島はそう言って微笑んだ。\n\n穏やかな言い方なのに、後ろへ半歩下がりたくなる種類の声だった。",
 ]
+THREAD_LINES = [
+    "真琴の頭から離れない未回収の問いは、{thread}だった。今回の異変もその線上に置いてみると、偶然では説明しにくい位置でつながり始める。",
+    "まだ片づいていない問題として残っているのは、{thread}だ。目の前の異変だけを追うより、その糸がどこへ続いているかを見失わないことのほうが重要になりつつある。",
+]
+ANTAGONIST_LINES = [
+    "真琴は最近、{antagonist}という名前を考える回数が増えていた。姿を見ない日でも、その人物の判断だけが先に街へ届いているように感じる。",
+    "直接対立したわけではない。それでも{antagonist}の存在は、真琴にとって次第に街のルールそのもののように重くなっていた。",
+]
 
 
 def load_json(path: Path) -> dict:
@@ -203,6 +211,12 @@ def build_body(settings: dict, seed: dict[str, str], characters: list[dict], sta
         random.choice(CLOSING_LINES).format(name=protagonist["name"]),
     ]
 
+    if state.get("open_threads"):
+        body.insert(3, random.choice(THREAD_LINES).format(thread=random.choice(state["open_threads"])))
+
+    if state.get("current_antagonist"):
+        body.insert(4, random.choice(ANTAGONIST_LINES).format(antagonist=state["current_antagonist"]))
+
     if arc != "序盤":
         body.insert(-2, random.choice(WATCHER_LINES).format(watcher_name=watcher["name"]))
         body.insert(-2, random.choice(WATCHER_DIALOGUES))
@@ -253,6 +267,7 @@ def main() -> None:
     settings = load_json(SETTINGS)
     characters = load_json(CHARACTERS)
     state = load_json(STATE)
+    arc = get_arc(state["next_chapter"])
     seed = choose_seed_for_arc(state["next_chapter"])
     chapter, summary = build_chapter(settings, seed, characters, state)
 
@@ -269,6 +284,7 @@ def main() -> None:
                 "chapter_number": state["next_chapter"],
                 "summary": summary,
                 "character_count": len(chapter),
+                "arc": arc,
             },
             ensure_ascii=False,
             indent=2,
