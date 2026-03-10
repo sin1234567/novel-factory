@@ -2,6 +2,11 @@
   "platform": "kakuyomu",
   "work_new_episode_url": "",
   "default_visibility": "draft",
+  "browser": {
+    "channel": "chrome",
+    "user_data_dir": "C:/Users/fillm/AppData/Local/Google/Chrome/User Data",
+    "profile_directory": "Default"
+  },
   "selectors": {
     "episode_title": "input[name='title']",
     "episode_body": "textarea[name='body']",

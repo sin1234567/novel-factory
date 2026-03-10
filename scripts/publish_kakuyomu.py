@@ -6,7 +6,6 @@ from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "out"
-AUTH = ROOT / "auth" / "kakuyomu_storage_state.json"
 CONFIG = ROOT / "data" / "publish_config.json"
 CHAPTER = OUT / "chapter_latest.md"
 
@@ -26,8 +25,6 @@ def split_chapter(text: str) -> tuple[str, str]:
 
 
 def main() -> None:
-    if not AUTH.exists():
-        raise FileNotFoundError(f"Missing login state: {AUTH}")
     if not CHAPTER.exists():
         raise FileNotFoundError(f"Missing generated chapter: {CHAPTER}")
 
@@ -36,13 +33,22 @@ def main() -> None:
     if not episode_url:
         raise RuntimeError("Set work_new_episode_url in data/publish_config.json before publishing.")
 
+    browser = config["browser"]
+    user_data_dir = browser["user_data_dir"]
+    profile_directory = browser["profile_directory"]
+    channel = browser.get("channel", "chrome")
+
     selectors = config["selectors"]
     chapter_text = CHAPTER.read_text(encoding="utf-8")
     title, body = split_chapter(chapter_text)
 
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=False)
-        context = browser.new_context(storage_state=str(AUTH))
+        context = p.chromium.launch_persistent_context(
+            user_data_dir=user_data_dir,
+            headless=False,
+            channel=channel,
+            args=[f"--profile-directory={profile_directory}"],
+        )
         page = context.new_page()
         page.goto(episode_url, wait_until="domcontentloaded")
 
@@ -56,7 +62,7 @@ def main() -> None:
 
         print("Draft submission flow executed. Verify the result in the opened browser window.")
         input("Press Enter to close the browser...")
-        browser.close()
+        context.close()
 
 
 if __name__ == "__main__":
