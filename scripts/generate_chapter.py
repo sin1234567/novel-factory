@@ -108,6 +108,10 @@ WATCHER_LINES = [
     "{watcher_name}はその場にいなかったはずなのに、後から振り返ると最初から近くに視線だけ置いていたように思える人物だった。街の仕組みを守る側なのか、壊さないよう監視する側なのか、その立ち位置はまだ読めない。ただ一つ言えるのは、真琴が手がかりを拾うたびに、その人物の影もまた濃くなるということだった。",
     "{watcher_name}という名は記録にも会話にも頻繁には出てこない。だが工房組合の決定や街の検査記録を辿ると、いつも最後にその名前が静かに残っている。表では穏やかに微笑み、裏では流れを止める。そういう人間が一人いるだけで、街の空気は驚くほど変わる。",
 ]
+WATCHER_DIALOGUES = [
+    "「記録は残したほうがいい。ただし、残し方を間違えると街のためにならない」\n\n灰島は柔らかな声でそう言った。\n\n脅しには聞こえない。だからこそ、真琴は余計に警戒した。",
+    "「君はよく見ている。だが、見えたもの全部に名前を付ける必要はない」\n\n灰島はそう言って微笑んだ。\n\n穏やかな言い方なのに、後ろへ半歩下がりたくなる種類の声だった。",
+]
 
 
 def load_json(path: Path) -> dict:
@@ -201,6 +205,7 @@ def build_body(settings: dict, seed: dict[str, str], characters: list[dict], sta
 
     if arc != "序盤":
         body.insert(-2, random.choice(WATCHER_LINES).format(watcher_name=watcher["name"]))
+        body.insert(-2, random.choice(WATCHER_DIALOGUES))
 
     return body
 
