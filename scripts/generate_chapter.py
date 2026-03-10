@@ -18,6 +18,12 @@ STATE = DATA / "series_state.json"
 
 MIN_BODY_LENGTH = 2000
 
+ARC_RULES = {
+    "序盤": {"max": 10, "mood": "謎を積み上げる", "focus": "異変の観察と街の違和感"},
+    "中盤": {"max": 20, "mood": "不穏さを強める", "focus": "人間関係の揺れと隠された意図"},
+    "終盤": {"max": 999, "mood": "回収を進める", "focus": "過去の事件との接続と真相への接近"},
+}
+
 OPENINGS = [
     "{place}では、夜が深くなるほど機械の音がよく響く。霧の向こうに隠れた工房の屋根は朝になっても鈍い色のままで、街の人間はその灰色を見慣れた空模様のように受け入れていた。けれど{chapter_label}の朝だけは、空気の流れまで何かを隠しているように重かった。",
     "{place}の朝は遅い。陽が差し込んでも石畳はすぐには温まらず、古い配管の奥で遅れて目を覚ましたような音が鳴る。{chapter_label}の始まりにふさわしくないほど静かな朝だったが、そういう朝に限って厄介な異変は見つかるものだった。",
@@ -79,6 +85,25 @@ CLOSING_LINES = [
     "{name}は答えに近づいた気がしたが、同時にもっと大きな秘密の存在にも気づく。街の一件一件を別々の出来事として扱う限り、真相には届かない。ばらばらに見える異変の奥で、同じ手つきがずっと続いている。その確信だけを持って、{name}は明日の朝を待つことにした。",
     "真相はまだ遠い。それでも{name}は、次に止まる時計を待つことにした。待つというより、今度は先に見つけに行くつもりだった。街の静けさの中には、耳を澄ませた者にしか聞こえない予兆がある。今日ようやく、その聞き方の入口に立てた気がしていた。",
 ]
+ARC_EXPANSIONS = {
+    "序盤": [
+        "まだ答えよりも疑問のほうが多い。だからこそ、真琴は今のうちに街の小さな違和感を一つずつ集めておくべきだと考えた。大きな真相は、たいてい最初に見逃された細部の中から立ち上がる。",
+        "序盤で大事なのは、答えを急がないことだ。真琴はそう自分に言い聞かせながら、目の前の異変を街全体の地図の中に置いて考えようとした。点のままでは意味を持たない出来事も、線で結べば別の顔を見せる。",
+    ],
+    "中盤": [
+        "ここから先は、異変そのものより人の沈黙のほうが重くなっていく。真琴は記録を追うほど、隠されているのが事実だけではなく、誰がどこまで知っているかという関係そのものだと感じ始めていた。街は秘密を守っているのではなく、秘密を抱えたまま動き続けている。",
+        "中盤に入った今、真琴の前には手がかりだけでなく選択肢も増え始めていた。誰を信じるか、どこまで問い詰めるか、何を見たことにして何を見なかったことにするか。その判断一つで、真相への道筋も人との距離も変わってしまう。",
+    ],
+    "終盤": [
+        "終盤に近づくにつれ、過去に拾った違和感はばらばらな記録ではなく、同じ設計図の断片のように見え始める。真琴が今向き合っているのは新しい謎ではなく、ずっと前から街に置かれていた問いの続きなのかもしれなかった。",
+        "回収の段階では、新しい情報そのものより、既に知っていた事実の意味が変わることのほうが大きい。真琴は今日見つけた手がかりを胸の中で反転させながら、これまでの出来事が一つの輪郭へ収束していく気配を感じていた。",
+    ],
+}
+ARC_CATEGORY_HINTS = {
+    "序盤": {"導入", "人物", "秘密"},
+    "中盤": {"事件", "対立", "秘密"},
+    "終盤": {"回収", "秘密", "事件"},
+}
 
 
 def load_json(path: Path) -> dict:
@@ -102,6 +127,25 @@ def load_unused_seed() -> dict[str, str]:
     return random.choice(rows)
 
 
+def get_arc(chapter_number: int) -> str:
+    for arc_name, rule in ARC_RULES.items():
+        if chapter_number <= rule["max"]:
+            return arc_name
+    return "終盤"
+
+
+def choose_seed_for_arc(chapter_number: int) -> dict[str, str]:
+    used = load_used_ids()
+    arc = get_arc(chapter_number)
+    with open(SEEDS, encoding="utf-8") as f:
+        rows = [row for row in csv.DictReader(f) if row["seed_id"] not in used]
+    if not rows:
+        raise RuntimeError("No unused story seeds left. Add more rows to story_seeds.csv.")
+
+    preferred = [row for row in rows if row["category"] in ARC_CATEGORY_HINTS[arc]]
+    return random.choice(preferred or rows)
+
+
 def build_character_notes(characters: list[dict]) -> list[str]:
     lines = ["## 登場人物メモ", ""]
     for character in characters:
@@ -120,12 +164,15 @@ def build_body(settings: dict, seed: dict[str, str], characters: list[dict], sta
     protagonist = settings["protagonist"]
     place = settings["setting"]["place"]
     hook = settings["setting"]["hook"]
-    chapter_label = f"第{state['next_chapter']}話"
+    chapter_number = state["next_chapter"]
+    chapter_label = f"第{chapter_number}話"
+    arc = get_arc(chapter_number)
     mentor = next((c for c in characters if "師匠" in c["role"]), characters[0])
     librarian = next((c for c in characters if "司書" in c["role"]), characters[-1])
 
     return [
         random.choice(OPENINGS).format(place=place, chapter_label=chapter_label),
+        f"この章で真琴が向き合う中心は、{ARC_RULES[arc]['focus']}だった。{ARC_RULES[arc]['mood']}段階に入った街は、同じ場所でも前より少し違う表情を見せ始めている。",
         random.choice(SCENE_SETUP).format(
             name=protagonist["name"],
             role=protagonist["role"],
@@ -143,6 +190,7 @@ def build_body(settings: dict, seed: dict[str, str], characters: list[dict], sta
         random.choice(INNER_LINES).format(name=protagonist["name"]),
         f"{protagonist['name']}の目的は{protagonist['goal']}ことだが、今回の出来事はその入口にすぎなかった。異変一つを追うだけなら修理工見習いの仕事の範囲を超えている。けれど街の異常が工房の仕事と日常の境目を少しずつ侵食している以上、もう見て見ぬふりでは済まない。自分の仕事を守るためにも、働く場所そのものを疑う必要が出てきていた。",
         random.choice(REVEAL_LINES).format(name=protagonist["name"]),
+        random.choice(ARC_EXPANSIONS[arc]),
         random.choice(CLOSING_LINES).format(name=protagonist["name"]),
     ]
 
@@ -150,6 +198,7 @@ def build_body(settings: dict, seed: dict[str, str], characters: list[dict], sta
 def build_chapter(settings: dict, seed: dict[str, str], characters: list[dict], state: dict) -> tuple[str, str]:
     protagonist = settings["protagonist"]
     chapter_number = state["next_chapter"]
+    arc = get_arc(chapter_number)
     summary = build_summary(protagonist["name"], seed)
     body = build_body(settings, seed, characters, state)
 
@@ -158,6 +207,7 @@ def build_chapter(settings: dict, seed: dict[str, str], characters: list[dict], 
         "",
         f"ジャンル: {settings['genre']}",
         f"雰囲気: {settings['tone']}",
+        f"進行段階: {arc}",
         f"目標文字数: {settings['style']['chapter_length']}",
         "",
     ]
@@ -188,7 +238,7 @@ def main() -> None:
     settings = load_json(SETTINGS)
     characters = load_json(CHARACTERS)
     state = load_json(STATE)
-    seed = load_unused_seed()
+    seed = choose_seed_for_arc(state["next_chapter"])
     chapter, summary = build_chapter(settings, seed, characters, state)
 
     latest = OUT / "chapter_latest.md"
