@@ -1,6 +1,6 @@
 {
   "platform": "kakuyomu",
-  "work_new_episode_url": "",
+  "work_new_episode_url": "https://kakuyomu.jp/my/works/2912051595166097653/episodes/new",
   "default_visibility": "draft",
   "browser": {
     "channel": "chrome",

@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "out"
 CONFIG = ROOT / "data" / "publish_config.json"
 CHAPTER = OUT / "chapter_latest.md"
+AUTH_PROFILE = ROOT / "auth" / "kakuyomu_profile"
 
 
 def load_config() -> dict:
@@ -27,6 +28,8 @@ def split_chapter(text: str) -> tuple[str, str]:
 def main() -> None:
     if not CHAPTER.exists():
         raise FileNotFoundError(f"Missing generated chapter: {CHAPTER}")
+    if not AUTH_PROFILE.exists():
+        raise FileNotFoundError(f"Missing automation profile: {AUTH_PROFILE}")
 
     config = load_config()
     episode_url = config.get("work_new_episode_url", "").strip()
@@ -44,10 +47,9 @@ def main() -> None:
 
     with sync_playwright() as p:
         context = p.chromium.launch_persistent_context(
-            user_data_dir=user_data_dir,
+            user_data_dir=str(AUTH_PROFILE),
             headless=False,
             channel=channel,
-            args=[f"--profile-directory={profile_directory}"],
         )
         page = context.new_page()
         page.goto(episode_url, wait_until="domcontentloaded")
