@@ -189,7 +189,6 @@ def build_body(settings: dict, seed: dict[str, str], characters: list[dict], sta
 
     body = [
         random.choice(OPENINGS).format(place=place, chapter_label=chapter_label),
-        f"この章で真琴が向き合う中心は、{ARC_RULES[arc]['focus']}だった。{ARC_RULES[arc]['mood']}段階に入った街は、同じ場所でも前より少し違う表情を見せ始めている。",
         random.choice(SCENE_SETUP).format(
             name=protagonist["name"],
             role=protagonist["role"],
@@ -232,20 +231,13 @@ def build_chapter(settings: dict, seed: dict[str, str], characters: list[dict], 
     body = build_body(settings, seed, characters, state)
 
     paragraphs = [
-        f"# {settings['title']} 第{chapter_number}話下書き",
-        "",
-        f"ジャンル: {settings['genre']}",
-        f"雰囲気: {settings['tone']}",
-        f"進行段階: {arc}",
-        f"目標文字数: {settings['style']['chapter_length']}",
+        f"# 第{chapter_number}話",
         "",
     ]
 
     if state["last_summary"]:
-        paragraphs.extend(["## 前回までの流れ", "", state["last_summary"], ""])
+        paragraphs.extend(["前回までのあらすじ", "", state["last_summary"], ""])
 
-    paragraphs.extend(build_character_notes(characters))
-    paragraphs.extend(["", "## 本文", ""])
     paragraphs.extend(body)
 
     chapter = "\n\n".join(paragraphs) + "\n"
