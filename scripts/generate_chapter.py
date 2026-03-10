@@ -104,6 +104,10 @@ ARC_CATEGORY_HINTS = {
     "中盤": {"事件", "対立", "秘密"},
     "終盤": {"回収", "秘密", "事件"},
 }
+WATCHER_LINES = [
+    "{watcher_name}はその場にいなかったはずなのに、後から振り返ると最初から近くに視線だけ置いていたように思える人物だった。街の仕組みを守る側なのか、壊さないよう監視する側なのか、その立ち位置はまだ読めない。ただ一つ言えるのは、真琴が手がかりを拾うたびに、その人物の影もまた濃くなるということだった。",
+    "{watcher_name}という名は記録にも会話にも頻繁には出てこない。だが工房組合の決定や街の検査記録を辿ると、いつも最後にその名前が静かに残っている。表では穏やかに微笑み、裏では流れを止める。そういう人間が一人いるだけで、街の空気は驚くほど変わる。",
+]
 
 
 def load_json(path: Path) -> dict:
@@ -169,8 +173,9 @@ def build_body(settings: dict, seed: dict[str, str], characters: list[dict], sta
     arc = get_arc(chapter_number)
     mentor = next((c for c in characters if "師匠" in c["role"]), characters[0])
     librarian = next((c for c in characters if "司書" in c["role"]), characters[-1])
+    watcher = next((c for c in characters if "監査役" in c["role"]), characters[-1])
 
-    return [
+    body = [
         random.choice(OPENINGS).format(place=place, chapter_label=chapter_label),
         f"この章で真琴が向き合う中心は、{ARC_RULES[arc]['focus']}だった。{ARC_RULES[arc]['mood']}段階に入った街は、同じ場所でも前より少し違う表情を見せ始めている。",
         random.choice(SCENE_SETUP).format(
@@ -193,6 +198,11 @@ def build_body(settings: dict, seed: dict[str, str], characters: list[dict], sta
         random.choice(ARC_EXPANSIONS[arc]),
         random.choice(CLOSING_LINES).format(name=protagonist["name"]),
     ]
+
+    if arc != "序盤":
+        body.insert(-2, random.choice(WATCHER_LINES).format(watcher_name=watcher["name"]))
+
+    return body
 
 
 def build_chapter(settings: dict, seed: dict[str, str], characters: list[dict], state: dict) -> tuple[str, str]:
